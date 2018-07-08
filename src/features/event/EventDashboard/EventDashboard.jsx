@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import EventList from "../EventList/EventList";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 import { deleteEvent } from "../eventActions";
 
@@ -11,6 +12,7 @@ class EventDashboard extends Component {
   };
 
   render() {
+    if (this.props.loading) return <LoadingComponent inverted={true} />;
     return (
       <div>
         <Grid>
@@ -28,7 +30,8 @@ class EventDashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-  events: state.events
+  events: state.events,
+  loading: state.async.loading
 });
 
 const mapDispatchToProps = dispatch => {

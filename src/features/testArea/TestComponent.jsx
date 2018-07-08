@@ -6,7 +6,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
 } from "react-places-autocomplete";
-import { incrementCounter, decrementCounter } from "./testActions";
+import { incrementAsync, decrementAsync } from "./testActions";
 import { openModal } from "../modals/modalActions";
 
 export class TestComponent extends Component {
@@ -30,7 +30,13 @@ export class TestComponent extends Component {
 
   render() {
     const inputProps = { value: this.state.address, onChange: this.onChange };
-    const { incrementCounter, decrementCounter, data, openModal } = this.props;
+    const {
+      incrementAsync,
+      decrementAsync,
+      data,
+      openModal,
+      loading
+    } = this.props;
     return (
       <div>
         <Script
@@ -39,8 +45,18 @@ export class TestComponent extends Component {
         />
         <h1>Test Component</h1>
         <h3>The answer is: {data}</h3>
-        <Button onClick={incrementCounter} color="green" content="inc" />
-        <Button onClick={decrementCounter} color="red" content="dec" />
+        <Button
+          loading={loading}
+          onClick={incrementAsync}
+          color="green"
+          content="inc"
+        />
+        <Button
+          loading={loading}
+          onClick={decrementAsync}
+          color="red"
+          content="dec"
+        />
         <Button
           onClick={() => openModal("TestModal", { data: 43 })}
           color="teal"
@@ -60,12 +76,13 @@ export class TestComponent extends Component {
 }
 
 const mapStateToProps = state => ({
-  data: state.test.data
+  data: state.test.data,
+  loading: state.test.loading
 });
 
 const actions = {
-  incrementCounter,
-  decrementCounter,
+  incrementAsync,
+  decrementAsync,
   openModal
 };
 
